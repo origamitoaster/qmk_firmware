@@ -175,10 +175,12 @@ static void render_anim(void) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case KC_KP_NUMLOCK ... KC_KP_DOT: //notice how it skips over F22
+    case KC_KP_NUMLOCK ... KC_KP_DOT:
       if (record->event.pressed) {
           //set holder value to 1
           //do tap animation
+          current_tap_frame = (current_tap_frame + 1) % TAP_FRAMES;
+          oled_write_raw_P(tap[abs((TAP_FRAMES-1)-current_tap_frame)], ANIM_SIZE);
         return false;
       }
       break;
