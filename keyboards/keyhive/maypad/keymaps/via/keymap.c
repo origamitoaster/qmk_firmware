@@ -165,6 +165,7 @@ static void render_anim(void) {
     } else {
         if(timer_elapsed32(anim_sleep) > OLED_TIMEOUT) {
             oled_off();
+            tapping = 0;
         } else {
             if(timer_elapsed32(anim_timer) > ANIM_FRAME_DURATION) {
                 anim_timer = timer_read32();
@@ -184,7 +185,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
   }
-  tapping = 0;
+  //tapping = 0;
   return true;
 }
 
