@@ -106,9 +106,10 @@ static void render_anim(void) {
             current_idle_frame = (current_idle_frame + 1) % IDLE_FRAMES;
             oled_write_raw_P(idle[abs((IDLE_FRAMES-1)-current_idle_frame)], ANIM_SIZE);
          }
-         if(tapping ==TAP_SPEED){
+         if(tapping >=TAP_SPEED){
              current_tap_frame = (current_tap_frame + 1) % TAP_FRAMES;
              oled_write_raw_P(tap[abs((TAP_FRAMES-1)-current_tap_frame)], ANIM_SIZE);
+             tapping--;
          }
     }
     if(tapping != 000) {
@@ -135,9 +136,9 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case KC_A ... KC_KP_DOT:
       if (record->event.pressed) {
-        tapping = 1;
+        tapping = 5;
       } else {
-        tapping = 0;
+        //tapping = 0;
       }
       return true; // Skip all further processing of this key
     default:
