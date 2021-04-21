@@ -38,4 +38,10 @@ static void render_logo(void) {
     oled_write_P(logo, false);
 }
 
+void oled_task_user(void) {
+    render_logo();  // Renders a static logo
+    oled_scroll_left();  // Turns on scrolling
+    }
+}
+
 #endif // OLED_DRIVER_ENABLE
