@@ -16,6 +16,8 @@
 #include QMK_KEYBOARD_H
 #include <stdio.h>
 
+char wpm_str[10];
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     LAYOUT_ortho_5x4(
         KC_NLCK, KC_PSLS, KC_PAST, KC_PMNS,
