@@ -170,14 +170,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 void oled_task_user(void) {
-    render_anim();
+    //render_anim();
     //oled_set_cursor(0,6);
     //sprintf(wpm_str, "       Taps: %03d", tapping);
     //oled_write(wpm_str, false);
     oled_set_cursor(0,0);
     led_t led_state = host_keyboard_led_state();
-    oled_write_P(led_state.num_lock ? PSTR("NUM ") : PSTR("    "), false);
+    oled_write_P(led_state.num_lock ? PSTR("Num ") : PSTR("    "), false);
     oled_set_cursor(0,1);
-    oled_write_P(led_state.caps_lock ? PSTR("CAP ") : PSTR("    "), false);
+    oled_write_P(led_state.caps_lock ? PSTR("Cap ") : PSTR("    "), false);
+    oled_set_cursor(0,0);
+    render_anim();
 }
 #endif
