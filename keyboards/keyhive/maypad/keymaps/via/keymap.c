@@ -38,6 +38,4 @@ static void render_logo(void) {
     oled_write_P(logo, false);
 }
 
-render_logo();
-
 #endif // OLED_DRIVER_ENABLE
