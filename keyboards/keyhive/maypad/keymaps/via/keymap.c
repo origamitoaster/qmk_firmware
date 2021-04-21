@@ -26,6 +26,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     )
 };
 
+
 #ifdef OLED_DRIVER_ENABLE
 
 static void render_logo(void) {
@@ -39,8 +40,12 @@ static void render_logo(void) {
 }
 
 void oled_task_user(void) {
+    led_t led_state = host_keyboard_led_state();
+    oled_write_P(led_state.num_lock ? PSTR("NUM ") : PSTR("    "), false);
+    oled_write_P(led_state.caps_lock ? PSTR("CAP ") : PSTR("    "), false);
+    oled_write_P(led_state.scroll_lock ? PSTR("SCR ") : PSTR("    "), false);
     render_logo();  // Renders a static logo
-    oled_scroll_left();  // Turns on scrolling
+    //oled_scroll_left();  // Turns on scrolling
 }
 
 #endif // OLED_DRIVER_ENABLE
