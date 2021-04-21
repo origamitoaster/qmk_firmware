@@ -149,7 +149,7 @@ static void render_anim(void) {
              // oled_write_raw_P(prep[abs((PREP_FRAMES-1)-current_prep_frame)], ANIM_SIZE); // uncomment if IDLE_FRAMES >1
              oled_write_raw_P(prep[0], ANIM_SIZE);  // remove if IDLE_FRAMES >1
          }
-         if(record->event.pressed){
+         if(get_current_wpm() >=TAP_SPEED){
              current_tap_frame = (current_tap_frame + 1) % TAP_FRAMES;
              oled_write_raw_P(tap[abs((TAP_FRAMES-1)-current_tap_frame)], ANIM_SIZE);
          }
@@ -171,6 +171,19 @@ static void render_anim(void) {
             }
         }
     }
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+    case KC_KP_NUMLOCK ... KC_KP_DOT: //notice how it skips over F22
+      if (record->event.pressed) {
+          //set holder value to 1
+          //do tap animation
+        return false;
+      }
+      break;
+  }
+  return true;
 }
 
 void oled_task_user(void) {
