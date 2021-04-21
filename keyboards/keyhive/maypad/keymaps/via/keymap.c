@@ -180,7 +180,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     case KC_NUMLOCK ... KC_KP_DOT:
       if (record->event.pressed) {
           tapping+=1;
-          //render_anim();
+          render_anim();
         return false;
       }
       break;
@@ -190,7 +190,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 void oled_task_user(void) {
-    render_anim();
+    //render_anim();
     oled_set_cursor(0,6);
     sprintf(wpm_str, "       Taps: %03d", tapping);
     oled_write(wpm_str, false);
