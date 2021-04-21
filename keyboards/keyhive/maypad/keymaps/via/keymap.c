@@ -179,10 +179,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
     case KC_NUMLOCK ... KC_KP_DOT:
       if (record->event.pressed) {
-          tapping+=1;
+          tapping++;
           //render_anim();
         return false;
       }
+      tapping--;
       break;
   }
   tapping = 0;
