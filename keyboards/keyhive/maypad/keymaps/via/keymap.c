@@ -181,13 +181,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       if (record->event.pressed) {
           tapping++;
           //render_anim();
-        return false;
+      } else {
+          tapping--;
       }
-      tapping--;
-      break;
+      return true;
   }
-  tapping = 0;
-  return true;
 }
 
 void oled_task_user(void) {
