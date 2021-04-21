@@ -154,7 +154,7 @@ void oled_task_user(void) {
     oled_set_cursor(0,3);
     led_t led_state = host_keyboard_led_state();
     oled_write_P(led_state.num_lock ? PSTR("Num") : PSTR(""), false);
-    oled_set_cursor(0,4);
+    oled_set_cursor(0,2);
     oled_write_P(led_state.caps_lock ? PSTR("Caps") : PSTR(""), false);
 }
 #endif
