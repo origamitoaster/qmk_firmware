@@ -41,7 +41,7 @@ static void render_logo(void) {
 void oled_task_user(void) {
     led_t led_state = host_keyboard_led_state();
     oled_write_P(led_state.num_lock ? PSTR("NUM ") : PSTR("    "), false);
-    oled_write_ln_P(PSTR(" "), false);
+    oled_write_ln("", false);
     oled_write_P(led_state.caps_lock ? PSTR("CAP ") : PSTR("    "), false);
     render_logo();  // Renders a static logo
     //oled_scroll_left();  // Turns on scrolling
