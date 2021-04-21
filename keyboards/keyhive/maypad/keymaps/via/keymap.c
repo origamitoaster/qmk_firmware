@@ -185,7 +185,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       break;
   }
-  //tapping = 0;
+  tapping = 0;
   return true;
 }
 
