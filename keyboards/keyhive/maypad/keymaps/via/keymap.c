@@ -57,12 +57,12 @@ void oled_task_user(void) {
 
 // WPM-responsive animation stuff here
 #define IDLE_FRAMES 5
-#define IDLE_SPEED 10 // below this wpm value your animation will idle
+#define IDLE_SPEED 0 // below this wpm value your animation will idle
 
 // #define PREP_FRAMES 1 // uncomment if >1
 
 #define TAP_FRAMES 2
-#define TAP_SPEED 20 // above this wpm value typing animation to triggere
+#define TAP_SPEED 1 // above this wpm value typing animation to triggere
 
 #define ANIM_FRAME_DURATION 200 // how long each frame lasts in ms
 // #define SLEEP_TIMER 60000 // should sleep after this period of 0 wpm, needs fixing
@@ -73,6 +73,7 @@ uint32_t anim_sleep = 0;
 uint8_t current_idle_frame = 0;
 // uint8_t current_prep_frame = 0; // uncomment if PREP_FRAMES >1
 uint8_t current_tap_frame = 0;
+uint8_t tapping = 0;
 
 // Images credit j-inc(/James Incandenza) and pixelbenny. Credit to obosob for initial animation approach.
 static void render_anim(void) {
@@ -141,21 +142,21 @@ static void render_anim(void) {
 
     //assumes 1 frame prep stage
     void animation_phase(void) {
-        if(get_current_wpm() <=IDLE_SPEED){
+        if(tapping <=IDLE_SPEED){
             current_idle_frame = (current_idle_frame + 1) % IDLE_FRAMES;
             oled_write_raw_P(idle[abs((IDLE_FRAMES-1)-current_idle_frame)], ANIM_SIZE);
          }
-         if(get_current_wpm() >IDLE_SPEED && get_current_wpm() <TAP_SPEED){
+         if(tapping >IDLE_SPEED && tapping <TAP_SPEED){
              // oled_write_raw_P(prep[abs((PREP_FRAMES-1)-current_prep_frame)], ANIM_SIZE); // uncomment if IDLE_FRAMES >1
              oled_write_raw_P(prep[0], ANIM_SIZE);  // remove if IDLE_FRAMES >1
          }
-         if(get_current_wpm() >=TAP_SPEED){
+         if(tapping >=TAP_SPEED){
              current_tap_frame = (current_tap_frame + 1) % TAP_FRAMES;
              oled_write_raw_P(tap[abs((TAP_FRAMES-1)-current_tap_frame)], ANIM_SIZE);
          }
     }
-    if(get_current_wpm() != 000) {
-        //oled_on(); // not essential but turns on animation OLED with any alpha keypress
+    if(tapping != 000) {
+        oled_on(); // not essential but turns on animation OLED with any alpha keypress
         if(timer_elapsed32(anim_timer) > ANIM_FRAME_DURATION) {
             anim_timer = timer_read32();
             animation_phase();
@@ -163,7 +164,7 @@ static void render_anim(void) {
         anim_sleep = timer_read32();
     } else {
         if(timer_elapsed32(anim_sleep) > OLED_TIMEOUT) {
-            //oled_off();
+            oled_off();
         } else {
             if(timer_elapsed32(anim_timer) > ANIM_FRAME_DURATION) {
                 anim_timer = timer_read32();
@@ -175,21 +176,20 @@ static void render_anim(void) {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
-    case KC_KP_NUMLOCK ... KC_KP_DOT:
+    case KC_NUMLOCK ... KC_KP_DOT:
       if (record->event.pressed) {
-          //set holder value to 1
-          //do tap animation
-          current_tap_frame = (current_tap_frame + 1) % TAP_FRAMES;
-          oled_write_raw_P(tap[abs((TAP_FRAMES-1)-current_tap_frame)], ANIM_SIZE);
+          render_anim();
+          tapping+=1;
         return false;
       }
       break;
   }
+  tapping = 0;
   return true;
 }
 
 void oled_task_user(void) {
-    render_anim();
+    //render_anim();
     //oled_set_cursor(0,6);
     //sprintf(wpm_str, "       WPM: %03d", get_current_wpm());
     //oled_write(wpm_str, false);
