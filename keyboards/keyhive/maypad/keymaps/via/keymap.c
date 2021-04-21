@@ -149,7 +149,7 @@ static void render_anim(void) {
              // oled_write_raw_P(prep[abs((PREP_FRAMES-1)-current_prep_frame)], ANIM_SIZE); // uncomment if IDLE_FRAMES >1
              oled_write_raw_P(prep[0], ANIM_SIZE);  // remove if IDLE_FRAMES >1
          }
-         if(get_current_wpm() >=TAP_SPEED){
+         if(record->event.pressed){
              current_tap_frame = (current_tap_frame + 1) % TAP_FRAMES;
              oled_write_raw_P(tap[abs((TAP_FRAMES-1)-current_tap_frame)], ANIM_SIZE);
          }
@@ -175,8 +175,8 @@ static void render_anim(void) {
 
 void oled_task_user(void) {
     render_anim();
-    oled_set_cursor(0,6);
-    sprintf(wpm_str, "       WPM: %03d", get_current_wpm());
-    oled_write(wpm_str, false);
+    //oled_set_cursor(0,6);
+    //sprintf(wpm_str, "       WPM: %03d", get_current_wpm());
+    //oled_write(wpm_str, false);
 }
 #endif
